@@ -1,5 +1,0 @@
-I’d like to make a static (for demonstration purposes; if we need to move to a dynamic web app, we can, but the static one is what I’m after first) web interface that Nurses in training can use to simulate what they would do with the computer in real situations.  I applied for a job as a Simulation Technician, and while I didn’t get the job, during the interview, they mentioned that they didn’t use their own app; they were just using an Excel spreadsheet one of the instructors put together.  I’d like to provide them with something a lot better.
-
-I’d like it to have all the various input fields that a typical EHR interface for Nurses would provide while they are interacting with patients.  Maybe partition things out into tabbed sections, like Demographics, Vitals, Medication Administration, Assessments, Care Plans & Interventions, and Communication & handoff tools…  Or something like that.  Whatever is most realistic for a simulated EHR interface.
-
-Could you give me a web-app for something like that, as a starting point?
