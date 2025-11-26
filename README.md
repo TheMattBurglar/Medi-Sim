@@ -92,7 +92,7 @@ No installation required! Simply open `index.html` in any modern web browser.
 ## File Structure
 
 ```
-ehr-simulation/
+Medi-Sim/
 ├── index.html      # Main application structure
 ├── style.css       # Professional medical interface styling
 ├── script.js       # Interactive functionality and data management
