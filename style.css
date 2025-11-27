@@ -9,43 +9,43 @@
   --primary-blue-light: #2872b8;
   --accent-teal: #0d9488;
   --accent-teal-light: #14b8a6;
-  
+
   /* Semantic Colors */
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
   --bg-header: linear-gradient(135deg, #1e5a8e 0%, #2872b8 100%);
   --bg-tab: #e2e8f0;
   --bg-tab-active: #ffffff;
-  
+
   /* Text Colors */
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-light: #94a3b8;
   --text-white: #ffffff;
-  
+
   /* Borders */
   --border-color: #cbd5e1;
   --border-radius: 8px;
   --border-radius-sm: 4px;
-  
+
   /* Status Colors */
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
   --info: #3b82f6;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  
+
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-sm: 0.875rem;
@@ -88,10 +88,54 @@ body {
 .patient-header-content {
   max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.header-row-top {
+  display: flex;
+  justify-content: center;
+  /* Center the search bar */
+  width: 100%;
+}
+
+.header-row-bottom {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.header-search-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  width: 100%;
+  max-width: 800px;
+  /* Limit max width */
+}
+
+.search-input {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  /* Slightly larger font */
+  flex-grow: 1;
+  /* Take available space */
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
 }
 
 .patient-info-item {
@@ -125,8 +169,15 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
 }
 
 /* ============================================
@@ -198,6 +249,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -280,6 +332,13 @@ textarea {
   background-color: var(--bg-card);
   transition: all 0.2s ease;
   width: 100%;
+}
+
+.readonly-field {
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  border-color: var(--border-color);
 }
 
 input:focus,
@@ -549,24 +608,24 @@ input[type="radio"] {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
   }
-  
+
   .tab-button {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-sm);
   }
-  
+
   .form-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .vitals-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .data-table {
     font-size: var(--font-size-sm);
   }
-  
+
   .data-table th,
   .data-table td {
     padding: var(--spacing-sm);
@@ -581,18 +640,18 @@ input[type="radio"] {
   body {
     background-color: white;
   }
-  
+
   .tab-navigation,
   .button-group,
   .save-indicator {
     display: none;
   }
-  
+
   .tab-content {
     display: block !important;
     page-break-inside: avoid;
   }
-  
+
   .content-card {
     box-shadow: none;
     border: 1px solid #000;

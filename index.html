@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,29 +10,46 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <!-- Patient Header Banner -->
     <header class="patient-header">
         <div class="patient-header-content">
-            <div class="patient-info-item">
-                <span class="patient-info-label">Patient Name</span>
-                <span class="patient-info-value" id="header-patient-name">Smith, John A.</span>
+            <!-- Top Row: Search -->
+            <div class="header-row-top">
+                <div class="header-search-group">
+                    <input type="text" id="patient-search-input"
+                        placeholder="Enter MRN (e.g. S1234567) or Account # (e.g. S123456789)" class="search-input">
+                    <button class="btn btn-secondary btn-sm" onclick="searchPatient()">Search</button>
+                </div>
             </div>
-            <div class="patient-info-item">
-                <span class="patient-info-label">MRN</span>
-                <span class="patient-info-value" id="header-mrn">123456789</span>
-            </div>
-            <div class="patient-info-item">
-                <span class="patient-info-label">DOB / Age</span>
-                <span class="patient-info-value" id="header-dob">05/15/1965 (59y)</span>
-            </div>
-            <div class="patient-info-item">
-                <span class="patient-info-label">Room / Bed</span>
-                <span class="patient-info-value">ICU 301-A</span>
-            </div>
-            <div class="patient-info-item">
-                <span class="patient-info-label">Allergies</span>
-                <span class="allergy-badge" id="header-allergies">PENICILLIN</span>
+
+            <!-- Bottom Row: Patient Info -->
+            <div class="header-row-bottom">
+                <div class="patient-info-item">
+                    <span class="patient-info-label">Patient Name</span>
+                    <span class="patient-info-value" id="header-patient-name">--</span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">MRN</span>
+                    <span class="patient-info-value" id="header-mrn">--</span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">Account #</span>
+                    <span class="patient-info-value" id="header-account">--</span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">DOB / Age</span>
+                    <span class="patient-info-value" id="header-dob">--</span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">Room / Bed</span>
+                    <span class="patient-info-value">ICU 301-A</span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">Allergies</span>
+                    <span class="allergy-badge" id="header-allergies" style="display: none;">--</span>
+                </div>
             </div>
         </div>
     </header>
@@ -51,11 +69,15 @@
         <div class="tab-content active" id="demographics">
             <div class="content-card">
                 <h2 class="section-title">Patient Demographics</h2>
-                
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="mrn">Medical Record Number (MRN) <span class="required">*</span></label>
-                        <input type="text" id="mrn" value="123456789" required>
+                        <input type="text" id="mrn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="account-number">Account Number (Visit #) <span class="required">*</span></label>
+                        <input type="text" id="account-number" required>
                     </div>
                     <div class="form-group">
                         <label for="admission-date">Admission Date</label>
@@ -67,25 +89,25 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="last-name">Last Name <span class="required">*</span></label>
-                        <input type="text" id="last-name" value="Smith" required>
+                        <input type="text" id="last-name" required>
                     </div>
                     <div class="form-group">
                         <label for="first-name">First Name <span class="required">*</span></label>
-                        <input type="text" id="first-name" value="John" required>
+                        <input type="text" id="first-name" required>
                     </div>
                     <div class="form-group">
                         <label for="middle-name">Middle Name</label>
-                        <input type="text" id="middle-name" value="Andrew">
+                        <input type="text" id="middle-name">
                     </div>
                     <div class="form-group">
                         <label for="dob">Date of Birth <span class="required">*</span></label>
-                        <input type="date" id="dob" value="1965-05-15" required>
+                        <input type="date" id="dob" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
                         <select id="gender">
                             <option value="">Select...</option>
-                            <option value="male" selected>Male</option>
+                            <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="other">Other</option>
                             <option value="unknown">Unknown</option>
@@ -145,12 +167,13 @@
                 <div class="form-grid">
                     <div class="form-group full-width">
                         <label for="allergies">Allergies <span class="required">*</span></label>
-                        <textarea id="allergies" placeholder="List all known allergies (medications, food, environmental)">Penicillin (Severe - Anaphylaxis)</textarea>
+                        <textarea id="allergies"
+                            placeholder="List all known allergies (medications, food, environmental)"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="code-status">Code Status</label>
                         <select id="code-status">
-                            <option value="full-code" selected>Full Code</option>
+                            <option value="full-code">Full Code</option>
                             <option value="dnr">DNR (Do Not Resuscitate)</option>
                             <option value="dni">DNI (Do Not Intubate)</option>
                             <option value="dnr-dni">DNR/DNI</option>
@@ -159,7 +182,7 @@
                     </div>
                     <div class="form-group">
                         <label for="primary-language">Primary Language</label>
-                        <input type="text" id="primary-language" value="English">
+                        <input type="text" id="primary-language">
                     </div>
                     <div class="form-group">
                         <label for="interpreter-needed">Interpreter Needed?</label>
@@ -197,8 +220,12 @@
         <div class="tab-content" id="vitals">
             <div class="content-card">
                 <h2 class="section-title">Vital Signs</h2>
-                
+
                 <div class="vitals-entry">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Account Number (Visit #)</label>
+                        <input type="text" id="vitals-account-number" readonly class="readonly-field">
+                    </div>
                     <h3 class="section-subtitle">Record New Vital Signs</h3>
                     <div class="form-grid">
                         <div class="form-group">
@@ -347,7 +374,12 @@
         <div class="tab-content" id="medications">
             <div class="content-card">
                 <h2 class="section-title">Medication Administration Record (MAR)</h2>
-                
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Account Number (Visit #)</label>
+                    <input type="text" id="meds-account-number" readonly class="readonly-field">
+                </div>
+
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="showAddMedicationForm()">+ Add New Medication</button>
                 </div>
@@ -408,14 +440,39 @@
                     </div>
                 </div>
 
+                <!-- BCMA Modal / Section -->
+                <div id="bcma-scanner-section" class="vitals-entry"
+                    style="display: none; margin-top: 1rem; border-left: 4px solid var(--primary-blue); background: #f0f7ff;">
+                    <h3 class="section-subtitle">Barcode Medication Administration (BCMA)</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">Simulate scanning by entering the IDs
+                        below.</p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="scan-patient-id">1. Scan Patient Wristband (Account #)</label>
+                            <input type="text" id="scan-patient-id" placeholder="Scan/Type Account Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="scan-med-id">2. Scan Medication (Barcode ID)</label>
+                            <input type="text" id="scan-med-id" placeholder="Scan/Type Med Barcode" readonly>
+                            <!-- Auto-filled for simulation ease or manual? Let's make it manual for realism, but maybe readonly if we want to force a specific flow. Actually, user should type it. -->
+                        </div>
+                    </div>
+                    <div id="bcma-status" style="margin-bottom: 1rem; font-weight: bold;"></div>
+
+                    <div class="button-group">
+                        <button class="btn btn-success" onclick="confirmAdministration()">Confirm & Administer</button>
+                        <button class="btn btn-secondary" onclick="cancelAdministration()">Cancel</button>
+                    </div>
+                </div>
+
                 <h3 class="section-subtitle" style="margin-top: 2rem;">Active Medications</h3>
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Medication</th>
-                            <th>Dose</th>
-                            <th>Route</th>
-                            <th>Frequency</th>
+                            <th>Barcode ID</th> <!-- New Column -->
+                            <th>Dose/Route/Freq</th>
                             <th>Last Given</th>
                             <th>Next Due</th>
                             <th>Status</th>
@@ -424,7 +481,7 @@
                     </thead>
                     <tbody id="medication-list">
                         <tr>
-                            <td colspan="8" class="text-center">No medications ordered</td>
+                            <td colspan="7" class="text-center">No medications ordered</td>
                         </tr>
                     </tbody>
                 </table>
@@ -454,7 +511,7 @@
         <div class="tab-content" id="assessments">
             <div class="content-card">
                 <h2 class="section-title">Nursing Assessment</h2>
-                
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="assessment-date">Assessment Date</label>
@@ -602,7 +659,8 @@
                 </div>
                 <div class="form-group full-width">
                     <label for="gi-notes">Gastrointestinal Notes</label>
-                    <textarea id="gi-notes" placeholder="Abdomen assessment, BM characteristics, appetite..."></textarea>
+                    <textarea id="gi-notes"
+                        placeholder="Abdomen assessment, BM characteristics, appetite..."></textarea>
                 </div>
 
                 <h3 class="section-subtitle">Genitourinary</h3>
@@ -665,7 +723,8 @@
                 </div>
                 <div class="form-group full-width">
                     <label for="skin-notes">Integumentary Notes</label>
-                    <textarea id="skin-notes" placeholder="Wound location/description, skin condition, dressing changes..."></textarea>
+                    <textarea id="skin-notes"
+                        placeholder="Wound location/description, skin condition, dressing changes..."></textarea>
                 </div>
 
                 <h3 class="section-subtitle">Musculoskeletal & Mobility</h3>
@@ -723,7 +782,7 @@
         <div class="tab-content" id="careplans">
             <div class="content-card">
                 <h2 class="section-title">Care Plans & Interventions</h2>
-                
+
                 <div class="button-group">
                     <button class="btn btn-primary" onclick="showAddCarePlanForm()">+ Add Care Plan</button>
                 </div>
@@ -766,7 +825,8 @@
                     <div class="form-grid">
                         <div class="form-group full-width">
                             <label for="short-term-goal">Short-Term Goal</label>
-                            <textarea id="short-term-goal" placeholder="Goal to be achieved within 24-48 hours..."></textarea>
+                            <textarea id="short-term-goal"
+                                placeholder="Goal to be achieved within 24-48 hours..."></textarea>
                         </div>
                         <div class="form-group full-width">
                             <label for="long-term-goal">Long-Term Goal</label>
@@ -777,7 +837,8 @@
                     <h4 style="margin-top: 1rem; color: var(--primary-blue);">Interventions</h4>
                     <div class="form-group full-width">
                         <label for="interventions">Planned Interventions</label>
-                        <textarea id="interventions" placeholder="List nursing interventions (one per line)..."></textarea>
+                        <textarea id="interventions"
+                            placeholder="List nursing interventions (one per line)..."></textarea>
                     </div>
 
                     <div class="button-group">
@@ -788,7 +849,8 @@
 
                 <h3 class="section-subtitle" style="margin-top: 2rem;">Active Care Plans</h3>
                 <div id="active-careplans">
-                    <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No care plans created yet</p>
+                    <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No care plans created
+                        yet</p>
                 </div>
             </div>
         </div>
@@ -797,30 +859,35 @@
         <div class="tab-content" id="communication">
             <div class="content-card">
                 <h2 class="section-title">Communication & Handoff Tools</h2>
-                
+
                 <h3 class="section-subtitle">SBAR Report</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                    <strong>SBAR</strong> (Situation, Background, Assessment, Recommendation) is a standardized communication tool for healthcare professionals.
+                    <strong>SBAR</strong> (Situation, Background, Assessment, Recommendation) is a standardized
+                    communication tool for healthcare professionals.
                 </p>
 
                 <div class="sbar-section">
                     <h4>S - Situation</h4>
-                    <textarea id="sbar-situation" placeholder="What is happening with the patient right now? State the problem clearly and concisely."></textarea>
+                    <textarea id="sbar-situation"
+                        placeholder="What is happening with the patient right now? State the problem clearly and concisely."></textarea>
                 </div>
 
                 <div class="sbar-section">
                     <h4>B - Background</h4>
-                    <textarea id="sbar-background" placeholder="What is the relevant background/context? Include pertinent medical history, medications, vital signs, lab results."></textarea>
+                    <textarea id="sbar-background"
+                        placeholder="What is the relevant background/context? Include pertinent medical history, medications, vital signs, lab results."></textarea>
                 </div>
 
                 <div class="sbar-section">
                     <h4>A - Assessment</h4>
-                    <textarea id="sbar-assessment" placeholder="What do you think the problem is? What is your clinical impression?"></textarea>
+                    <textarea id="sbar-assessment"
+                        placeholder="What do you think the problem is? What is your clinical impression?"></textarea>
                 </div>
 
                 <div class="sbar-section">
                     <h4>R - Recommendation</h4>
-                    <textarea id="sbar-recommendation" placeholder="What do you recommend or what do you need? Be specific about what you want to happen."></textarea>
+                    <textarea id="sbar-recommendation"
+                        placeholder="What do you recommend or what do you need? Be specific about what you want to happen."></textarea>
                 </div>
 
                 <div class="button-group">
@@ -849,7 +916,8 @@
 
                 <div class="form-group full-width">
                     <label for="shift-notes">Shift Report Notes</label>
-                    <textarea id="shift-notes" placeholder="Key events during shift, pending tasks, patient updates..." style="min-height: 150px;"></textarea>
+                    <textarea id="shift-notes" placeholder="Key events during shift, pending tasks, patient updates..."
+                        style="min-height: 150px;"></textarea>
                 </div>
 
                 <div class="button-group">
@@ -883,6 +951,8 @@
         ✓ Data Saved
     </div>
 
+    <script src="patients.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

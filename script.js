@@ -6,9 +6,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     initializeTabs();
     loadAllData();
-    setCurrentDateTime();
+    // setCurrentDateTime(); // Don't auto-set on load, wait for patient load or manual entry
     setupAutoSave();
     setupFormListeners();
+
+    // Check if we have a patient loaded, if not, clear header
+    const demographics = loadData('demographics');
+    if (demographics) {
+        updateHeader(demographics);
+        updateAccountNumberFields(demographics.accountNumber);
+    }
 });
 
 // ============================================
@@ -211,36 +218,192 @@ function clearForm(formId) {
     showSaveIndicator();
 }
 
+function clearAllData() {
+    localStorage.clear();
+    location.reload();
+}
+
 // ============================================
-// Demographics Functions
+// Patient Search Functions
 // ============================================
+
+function searchPatient() {
+    const searchInput = document.getElementById('patient-search-input').value.trim();
+
+    if (!searchInput) {
+        alert('Please enter an MRN or Account Number');
+        return;
+    }
+
+    // Check if PATIENT_DATABASE exists (from patients.js)
+    if (typeof PATIENT_DATABASE === 'undefined') {
+        alert('Error: Patient database not loaded.');
+        return;
+    }
+
+    const patient = PATIENT_DATABASE.find(p =>
+        p.mrn === searchInput || p.accountNumber === searchInput
+    );
+
+    if (patient) {
+        if (confirm(`Found patient: ${patient.lastName}, ${patient.firstName}. \n\nLoading this patient will CLEAR current session data. Continue?`)) {
+            loadPatient(patient);
+        }
+    } else {
+        alert('Patient not found. Please check the MRN or Account Number.');
+    }
+}
+
+function loadPatient(patient) {
+    // 1. Clear existing data
+    localStorage.clear();
+
+    // 2. Prepare demographics object
+    const demographics = {
+        mrn: patient.mrn,
+        accountNumber: patient.accountNumber,
+        lastName: patient.lastName,
+        firstName: patient.firstName,
+        middleName: patient.middleName,
+        dob: patient.dob,
+        gender: patient.gender,
+        address: patient.address,
+        city: patient.city,
+        state: patient.state,
+        zip: patient.zip,
+        phone: patient.phone,
+        email: patient.email,
+        allergies: patient.allergies,
+        codeStatus: patient.codeStatus,
+        insuranceProvider: patient.insurance.provider,
+        policyNumber: patient.insurance.policyNumber,
+        groupNumber: patient.insurance.groupNumber,
+        admissionDate: patient.admissionDate,
+        emergencyName: patient.emergencyContact.name,
+        emergencyRelationship: patient.emergencyContact.relationship,
+        emergencyPhone: patient.emergencyContact.phone
+    };
+
+    // 3. Save to localStorage
+    saveData('demographics', demographics);
+
+    // 4. Populate Form Fields
+    populateDemographicsForm(demographics);
+
+    // 5. Update Header
+    updateHeader(demographics);
+
+    // 6. Update Account Number in other tabs
+    updateAccountNumberFields(demographics.accountNumber);
+
+    // 7. Set default dates
+    setCurrentDateTime();
+
+    // 8. Clear/Update all other tables to reflect new patient (empty) state
+    updateVitalsTable();
+    updateMedicationTable();
+    updateAdminLog();
+    updateCarePlansDisplay();
+    updateCommunicationLog();
+
+    // Clear forms that might have leftover data
+    clearForm('assessments');
+    clearForm('sbar-form'); // Assuming ID, if not will just return
+
+    // Reset BCMA section if open
+    document.getElementById('bcma-scanner-section').style.display = 'none';
+    document.getElementById('add-medication-form').style.display = 'none';
+
+    alert('Patient loaded successfully.');
+}
+
+function populateDemographicsForm(data) {
+    const mapping = {
+        'mrn': data.mrn,
+        'account-number': data.accountNumber,
+        'last-name': data.lastName,
+        'first-name': data.firstName,
+        'middle-name': data.middleName,
+        'dob': data.dob,
+        'gender': data.gender,
+        'address': data.address,
+        'city': data.city,
+        'state': data.state,
+        'zip': data.zip,
+        'phone': data.phone,
+        'email': data.email,
+        'allergies': data.allergies,
+        'code-status': data.codeStatus,
+        'insurance-provider': data.insuranceProvider,
+        'policy-number': data.policyNumber,
+        'group-number': data.groupNumber,
+        'admission-date': data.admissionDate,
+        'emergency-name': data.emergencyName,
+        'emergency-relationship': data.emergencyRelationship,
+        'emergency-phone': data.emergencyPhone
+    };
+
+    for (const [id, value] of Object.entries(mapping)) {
+        const field = document.getElementById(id);
+        if (field) {
+            field.value = value || '';
+            // Trigger change event to save to localStorage (auto-save logic)
+            saveData(`field_${id}`, value || '');
+        }
+    }
+}
+
+function updateHeader(data) {
+    document.getElementById('header-patient-name').textContent =
+        `${data.lastName}, ${data.firstName} ${data.middleName ? data.middleName.charAt(0) + '.' : ''}`;
+    document.getElementById('header-mrn').textContent = data.mrn || '--';
+    document.getElementById('header-account').textContent = data.accountNumber || '--';
+
+    if (data.dob) {
+        const age = calculateAge(data.dob);
+        const dobFormatted = new Date(data.dob).toLocaleDateString();
+        document.getElementById('header-dob').textContent = `${dobFormatted} (${age}y)`;
+    } else {
+        document.getElementById('header-dob').textContent = '--';
+    }
+
+    const allergyBadge = document.getElementById('header-allergies');
+    if (data.allergies) {
+        const allergyText = data.allergies.split('\n')[0].split('(')[0].trim();
+        allergyBadge.textContent = allergyText.toUpperCase();
+        allergyBadge.style.display = 'inline-block';
+    } else {
+        allergyBadge.style.display = 'none';
+    }
+}
+
+function updateAccountNumberFields(accNum) {
+    const fields = ['vitals-account-number', 'meds-account-number'];
+    fields.forEach(id => {
+        const field = document.getElementById(id);
+        if (field) {
+            field.value = accNum || '';
+        }
+    });
+}
 
 function saveDemographics() {
     const demographics = {
         mrn: document.getElementById('mrn').value,
+        accountNumber: document.getElementById('account-number').value,
         lastName: document.getElementById('last-name').value,
         firstName: document.getElementById('first-name').value,
         middleName: document.getElementById('middle-name').value,
         dob: document.getElementById('dob').value,
         gender: document.getElementById('gender').value,
-        allergies: document.getElementById('allergies').value
+        allergies: document.getElementById('allergies').value,
+        // Capture other fields for completeness if needed, but these are the core for header
+        admissionDate: document.getElementById('admission-date').value
     };
 
     // Update header
-    document.getElementById('header-patient-name').textContent =
-        `${demographics.lastName}, ${demographics.firstName} ${demographics.middleName.charAt(0)}.`;
-    document.getElementById('header-mrn').textContent = demographics.mrn;
-
-    if (demographics.dob) {
-        const age = calculateAge(demographics.dob);
-        const dobFormatted = new Date(demographics.dob).toLocaleDateString();
-        document.getElementById('header-dob').textContent = `${dobFormatted} (${age}y)`;
-    }
-
-    if (demographics.allergies) {
-        const allergyText = demographics.allergies.split('\n')[0].split('(')[0].trim();
-        document.getElementById('header-allergies').textContent = allergyText.toUpperCase();
-    }
+    updateHeader(demographics);
+    updateAccountNumberFields(demographics.accountNumber);
 
     saveData('demographics', demographics);
     alert('Demographics saved successfully!');
@@ -341,12 +504,19 @@ function clearVitalsForm() {
 // Medication Functions
 // ============================================
 
+let currentMedIndex = -1; // Track which med is being administered
+
 function showAddMedicationForm() {
     document.getElementById('add-medication-form').style.display = 'block';
+    document.getElementById('bcma-scanner-section').style.display = 'none';
 }
 
 function hideAddMedicationForm() {
     document.getElementById('add-medication-form').style.display = 'none';
+}
+
+function generateBarcode() {
+    return 'MED-' + Math.floor(10000 + Math.random() * 90000);
 }
 
 function addMedication() {
@@ -359,7 +529,8 @@ function addMedication() {
         startDate: document.getElementById('med-start-date').value,
         status: 'Active',
         lastGiven: null,
-        nextDue: null
+        nextDue: null,
+        barcodeId: generateBarcode() // Generate barcode
     };
 
     if (!med.name || !med.dose || !med.route || !med.frequency) {
@@ -387,32 +558,101 @@ function updateMedicationTable() {
     const tbody = document.getElementById('medication-list');
 
     if (medications.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center">No medications ordered</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No medications ordered</td></tr>';
         return;
     }
 
     tbody.innerHTML = medications.map((med, index) => `
         <tr>
             <td><strong>${med.name}</strong><br><small>${med.indication || ''}</small></td>
-            <td>${med.dose}</td>
-            <td>${med.route}</td>
-            <td>${med.frequency}</td>
+            <td><code style="background: #eee; padding: 2px 4px; border-radius: 3px;">${med.barcodeId || 'N/A'}</code></td>
+            <td>${med.dose} / ${med.route} / ${med.frequency}</td>
             <td>${med.lastGiven || '-'}</td>
             <td>${med.nextDue || 'Calculate'}</td>
             <td><span class="badge badge-success">${med.status}</span></td>
             <td>
-                <button class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;" onclick="administerMedication(${index})">Give</button>
+                <button class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;" onclick="initiateBCMA(${index})">Scan to Give</button>
                 <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;" onclick="deleteMedication(${index})">Remove</button>
             </td>
         </tr>
     `).join('');
 }
 
+function initiateBCMA(index) {
+    currentMedIndex = index;
+    const medications = loadData('medications') || [];
+    const med = medications[index];
+
+    // Show Scanner Section
+    const scannerSection = document.getElementById('bcma-scanner-section');
+    scannerSection.style.display = 'block';
+
+    // Hide Add Form if open
+    document.getElementById('add-medication-form').style.display = 'none';
+
+    // Clear previous inputs
+    document.getElementById('scan-patient-id').value = '';
+    document.getElementById('scan-med-id').value = ''; // User must type/scan this
+    document.getElementById('scan-med-id').readOnly = false; // Allow typing
+    document.getElementById('bcma-status').textContent = '';
+    document.getElementById('bcma-status').className = '';
+
+    // Scroll to scanner
+    scannerSection.scrollIntoView({ behavior: 'smooth' });
+
+    // Focus first input
+    document.getElementById('scan-patient-id').focus();
+}
+
+function cancelAdministration() {
+    document.getElementById('bcma-scanner-section').style.display = 'none';
+    currentMedIndex = -1;
+}
+
+function confirmAdministration() {
+    if (currentMedIndex === -1) return;
+
+    const scannedPatientId = document.getElementById('scan-patient-id').value.trim();
+    const scannedMedId = document.getElementById('scan-med-id').value.trim();
+    const statusDiv = document.getElementById('bcma-status');
+    statusDiv.textContent = 'Verifying...';
+    statusDiv.style.color = 'blue';
+
+    // Load current data
+    const demographics = loadData('demographics');
+    const medications = loadData('medications') || [];
+    const med = medications[currentMedIndex];
+
+    // Validation 1: Patient
+    if (!demographics || scannedPatientId !== demographics.accountNumber) {
+        statusDiv.textContent = 'ERROR: Patient Account Number mismatch!';
+        statusDiv.style.color = 'red';
+        return;
+    }
+
+    // Validation 2: Medication
+    if (scannedMedId !== med.barcodeId) {
+        statusDiv.textContent = 'ERROR: Medication Barcode mismatch!';
+        statusDiv.style.color = 'red';
+        return;
+    }
+
+    // Success
+    statusDiv.textContent = 'MATCH CONFIRMED. Processing administration...';
+    statusDiv.style.color = 'green';
+
+    // Proceed to administration logic (with short delay for effect)
+    setTimeout(() => {
+        administerMedication(currentMedIndex);
+        cancelAdministration(); // Close scanner
+    }, 1000);
+}
+
 function administerMedication(index) {
     const medications = loadData('medications') || [];
     const med = medications[index];
 
-    const initials = prompt('Enter your initials:');
+    const initials = prompt('Barcode match confirmed.\n\nEnter your initials to sign off:');
     if (!initials) return;
 
     const site = (med.route === 'IM' || med.route === 'SubQ') ? prompt('Enter injection site:') : '';
