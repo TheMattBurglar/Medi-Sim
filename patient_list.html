@@ -139,9 +139,9 @@
             return newArray;
         }
 
-        // Get 20 random patients
+        // Get 15 random patients
         const shuffledPatients = shuffleArray(PATIENT_DATABASE);
-        const selectedPatients = shuffledPatients.slice(0, 20);
+        const selectedPatients = shuffledPatients.slice(0, 15);
 
         // Populate table
         const tbody = document.getElementById('patientBody');
