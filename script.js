@@ -216,6 +216,28 @@ function toggleTobaccoDates() {
     }
 }
 
+function toggleAlcoholFields() {
+    const alcohol = document.getElementById('sh-alcohol').value;
+    const detailsGroup = document.getElementById('alcohol-details-group');
+
+    if (alcohol !== 'none') {
+        detailsGroup.style.display = 'block';
+    } else {
+        detailsGroup.style.display = 'none';
+    }
+}
+
+function toggleDrugFields() {
+    const drugs = document.getElementById('sh-drugs').value;
+    const detailsGroup = document.getElementById('drug-details-group');
+
+    if (drugs !== 'none') {
+        detailsGroup.style.display = 'block';
+    } else {
+        detailsGroup.style.display = 'none';
+    }
+}
+
 function clearForm(formId) {
     const container = document.getElementById(formId);
     if (!container) return;
@@ -1068,7 +1090,13 @@ function saveHistory() {
             tobaccoStart: document.getElementById('sh-tobacco-start').value,
             tobaccoQuit: document.getElementById('sh-tobacco-quit').value,
             alcohol: document.getElementById('sh-alcohol').value,
+            alcoholLast: document.getElementById('sh-alcohol-last').value,
+            alcoholType: document.getElementById('sh-alcohol-type').value,
             drugs: document.getElementById('sh-drugs').value,
+            drugType: document.getElementById('sh-drug-type').value,
+            drugMethod: document.getElementById('sh-drug-method').value,
+            drugFreq: document.getElementById('sh-drug-freq').value,
+            drugLast: document.getElementById('sh-drug-last').value,
             occupation: document.getElementById('sh-occupation').value,
             notes: document.getElementById('sh-notes').value
         }
@@ -1109,12 +1137,20 @@ function populateHistoryForm(data) {
         document.getElementById('sh-tobacco-start').value = data.social.tobaccoStart || '';
         document.getElementById('sh-tobacco-quit').value = data.social.tobaccoQuit || '';
         document.getElementById('sh-alcohol').value = data.social.alcohol || 'none';
+        document.getElementById('sh-alcohol-last').value = data.social.alcoholLast || '';
+        document.getElementById('sh-alcohol-type').value = data.social.alcoholType || '';
         document.getElementById('sh-drugs').value = data.social.drugs || 'none';
+        document.getElementById('sh-drug-type').value = data.social.drugType || '';
+        document.getElementById('sh-drug-method').value = data.social.drugMethod || '';
+        document.getElementById('sh-drug-freq').value = data.social.drugFreq || '';
+        document.getElementById('sh-drug-last').value = data.social.drugLast || '';
         document.getElementById('sh-occupation').value = data.social.occupation || '';
         document.getElementById('sh-notes').value = data.social.notes || '';
 
         // Update display of dependent fields
         toggleTobaccoDates();
+        toggleAlcoholFields();
+        toggleDrugFields();
     }
 
     // Trigger auto-save for all fields

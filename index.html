@@ -296,6 +296,10 @@
                 <h3 class="section-subtitle">Social History</h3>
                 <div class="form-grid">
                     <div class="form-group">
+                        <label for="sh-occupation">Occupation</label>
+                        <input type="text" id="sh-occupation" placeholder="Current/Former Occupation">
+                    </div>
+                    <div class="form-group">
                         <label for="sh-tobacco">Tobacco Use</label>
                         <select id="sh-tobacco" onchange="toggleTobaccoDates()">
                             <option value="never">Never Smoker</option>
@@ -315,24 +319,102 @@
                     </div>
                     <div class="form-group">
                         <label for="sh-alcohol">Alcohol Use</label>
-                        <select id="sh-alcohol">
+                        <select id="sh-alcohol" onchange="toggleAlcoholFields()">
                             <option value="none">None</option>
                             <option value="social">Social</option>
                             <option value="moderate">Moderate</option>
                             <option value="heavy">Heavy</option>
                         </select>
+                        <div id="alcohol-details-group" class="sub-field-container" style="display: none;">
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-alcohol-last">Last Drink</label>
+                                <select id="sh-alcohol-last">
+                                    <option value="">Select...</option>
+                                    <option value="<24h">Less than 24 hours ago</option>
+                                    <option value="24-48h">24 to 48 hours ago</option>
+                                    <option value="48-72h">48 to 72 hours ago</option>
+                                    <option value="3-7d">3 to 7 days ago</option>
+                                    <option value="1-2w">1 to 2 weeks ago</option>
+                                    <option value=">2w">More than 2 weeks ago</option>
+                                    <option value=">1m">More than 1 month ago</option>
+                                </select>
+                            </div>
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-alcohol-type">Preferred Type</label>
+                                <select id="sh-alcohol-type">
+                                    <option value="">Select...</option>
+                                    <option value="beer">Beer</option>
+                                    <option value="wine">Wine</option>
+                                    <option value="liquor">Liquor</option>
+                                    <option value="mixed">Mixed Drinks</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="sh-drugs">Illicit Drug Use</label>
-                        <select id="sh-drugs">
+                        <select id="sh-drugs" onchange="toggleDrugFields()">
                             <option value="none">None</option>
                             <option value="past">Past Use</option>
                             <option value="current">Current Use</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sh-occupation">Occupation</label>
-                        <input type="text" id="sh-occupation" placeholder="Current/Former Occupation">
+                        <div id="drug-details-group" class="sub-field-container" style="display: none;">
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-drug-type">Primary Substance</label>
+                                <select id="sh-drug-type">
+                                    <option value="">Select...</option>
+                                    <option value="cannabis">Cannabis</option>
+                                    <option value="cocaine">Cocaine/Stimulants</option>
+                                    <option value="heroin">Heroin</option>
+                                    <option value="meth">Methamphetamines</option>
+                                    <option value="opioids">Opioids (Non-Prescription)</option>
+                                    <option value="hallucinogens">Hallucinogens</option>
+                                    <option value="sedatives">Sedatives/Benzos</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-drug-method">Method of Use</label>
+                                <select id="sh-drug-method">
+                                    <option value="">Select...</option>
+                                    <option value="iv">IV (Intravenous)</option>
+                                    <option value="inhalation">Inhalation (Smoked/Vaped)</option>
+                                    <option value="intranasal">Intranasal (Snorted)</option>
+                                    <option value="oral">Oral</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-drug-freq">Frequency</label>
+                                <select id="sh-drug-freq">
+                                    <option value="">Select...</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="occasional">Occasional</option>
+                                </select>
+                            </div>
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="sh-drug-last">Last Use</label>
+                                <select id="sh-drug-last">
+                                    <option value="">Select...</option>
+                                    <option value="<24h">Less than 24 hours ago</option>
+                                    <option value="24-48h">24 to 48 hours ago</option>
+                                    <option value="48-72h">48 to 72 hours ago</option>
+                                    <option value="3-7d">3 to 7 days ago</option>
+                                    <option value="1-2w">1 to 2 weeks ago</option>
+                                    <option value=">2w">More than 2 weeks ago</option>
+                                    <option value=">1m">More than 1 month ago</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group full-width">
