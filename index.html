@@ -18,8 +18,8 @@
             <!-- Top Row: Search -->
             <div class="header-row-top">
                 <div class="header-search-group">
-                    <input type="text" id="patient-search-input"
-                        placeholder="Enter MRN (e.g. S1234567) or Account # (e.g. S123456789)" class="search-input">
+                    <input type="text" id="patient-search-input" placeholder="Name, MRN, or Account #"
+                        class="search-input">
                     <button class="btn btn-secondary btn-sm" onclick="searchPatient()">Search</button>
                 </div>
             </div>
@@ -105,11 +105,22 @@
                         <input type="date" id="dob" required>
                     </div>
                     <div class="form-group">
-                        <label for="gender">Gender</label>
+                        <label for="sex">Sex Assigned at Birth <span class="required">*</span></label>
+                        <select id="sex" required>
+                            <option value="">Select...</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="intersex">Intersex</option>
+                            <option value="unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender Identity</label>
                         <select id="gender">
                             <option value="">Select...</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
+                            <option value="non-binary">Non-Binary</option>
                             <option value="other">Other</option>
                             <option value="unknown">Unknown</option>
                         </select>
@@ -286,11 +297,21 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="sh-tobacco">Tobacco Use</label>
-                        <select id="sh-tobacco">
+                        <select id="sh-tobacco" onchange="toggleTobaccoDates()">
                             <option value="never">Never Smoker</option>
                             <option value="former">Former Smoker</option>
                             <option value="current">Current Smoker</option>
                         </select>
+                        <div id="tobacco-start-date-group" class="form-group sub-field"
+                            style="display: none; margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                            <label for="sh-tobacco-start">Start Date</label>
+                            <input type="date" id="sh-tobacco-start">
+                        </div>
+                        <div id="tobacco-quit-date-group" class="form-group sub-field"
+                            style="display: none; margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                            <label for="sh-tobacco-quit">Quit Date</label>
+                            <input type="date" id="sh-tobacco-quit">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="sh-alcohol">Alcohol Use</label>
@@ -1058,6 +1079,33 @@
     <!-- Save Indicator -->
     <div class="save-indicator" id="save-indicator">
         ✓ Data Saved
+    </div>
+
+    <!-- Patient Selection Modal -->
+    <div id="patient-selection-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 class="section-title">Select Patient</h2>
+            <p>Multiple patients matching your search were found. Please select the correct patient below:</p>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>DOB</th>
+                            <th>MRN</th>
+                            <th>Account #</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patient-selection-list">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-group" style="justify-content: flex-end; margin-top: 1rem;">
+                <button class="btn btn-secondary" onclick="closePatientSelectionModal()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script src="patients.js"></script>

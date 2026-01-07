@@ -199,6 +199,23 @@ function getCurrentDateTime() {
     return now.toLocaleString();
 }
 
+function toggleTobaccoDates() {
+    const tobacco = document.getElementById('sh-tobacco').value;
+    const startGroup = document.getElementById('tobacco-start-date-group');
+    const quitGroup = document.getElementById('tobacco-quit-date-group');
+
+    if (tobacco === 'former') {
+        startGroup.style.display = 'block';
+        quitGroup.style.display = 'block';
+    } else if (tobacco === 'current') {
+        startGroup.style.display = 'block';
+        quitGroup.style.display = 'none';
+    } else {
+        startGroup.style.display = 'none';
+        quitGroup.style.display = 'none';
+    }
+}
+
 function clearForm(formId) {
     const container = document.getElementById(formId);
     if (!container) return;
@@ -228,29 +245,78 @@ function clearAllData() {
 // ============================================
 
 function searchPatient() {
-    const searchInput = document.getElementById('patient-search-input').value.trim();
+    const searchInput = document.getElementById('patient-search-input').value.trim().toLowerCase();
 
     if (!searchInput) {
-        alert('Please enter an MRN or Account Number');
+        alert('Please enter Name, DOB, MRN, or Account Number');
         return;
     }
 
-    // Check if PATIENT_DATABASE exists (from patients.js)
     if (typeof PATIENT_DATABASE === 'undefined') {
         alert('Error: Patient database not loaded.');
         return;
     }
 
-    const patient = PATIENT_DATABASE.find(p =>
-        p.mrn === searchInput || p.accountNumber === searchInput
-    );
+    const matches = PATIENT_DATABASE.filter(p => {
+        const srch = searchInput;
+        const firstName = p.firstName.toLowerCase();
+        const lastName = p.lastName.toLowerCase();
+        const fullName = `${firstName} ${lastName}`;
+        const reverseName = `${lastName}, ${firstName}`; // "Smith, John"
 
-    if (patient) {
-        if (confirm(`Found patient: ${patient.lastName}, ${patient.firstName}. \n\nLoading this patient will CLEAR current session data. Continue?`)) {
-            loadPatient(patient);
-        }
+        // Name check
+        if (firstName.includes(srch) ||
+            lastName.includes(srch) ||
+            fullName.includes(srch) ||
+            reverseName.includes(srch)) return true;
+
+        // MRN/Account check
+        if ((p.mrn && p.mrn.toLowerCase().includes(srch)) ||
+            (p.accountNumber && p.accountNumber.toLowerCase().includes(srch))) return true;
+
+        return false;
+    });
+
+    if (matches.length === 0) {
+        alert('Patient not found.');
+    } else if (matches.length === 1) {
+        const patient = matches[0];
+        // Directly load session without confirmation per user request
+        loadPatient(patient);
     } else {
-        alert('Patient not found. Please check the MRN or Account Number.');
+        showPatientSelectionModal(matches);
+    }
+}
+
+function showPatientSelectionModal(patients) {
+    const modal = document.getElementById('patient-selection-modal');
+    const tbody = document.getElementById('patient-selection-list');
+
+    tbody.innerHTML = patients.map(p => `
+        <tr>
+            <td><strong>${p.lastName}, ${p.firstName}</strong></td>
+            <td>${p.dob}</td>
+            <td>${p.mrn}</td>
+            <td>${p.accountNumber}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="selectPatientFromModal('${p.mrn}')">Select</button>
+            </td>
+        </tr>
+    `).join('');
+
+    modal.style.display = 'flex';
+}
+
+function closePatientSelectionModal() {
+    document.getElementById('patient-selection-modal').style.display = 'none';
+}
+
+function selectPatientFromModal(mrn) {
+    const patient = PATIENT_DATABASE.find(p => p.mrn === mrn);
+    if (patient) {
+        // Directly load session without confirmation per user request
+        loadPatient(patient);
+        closePatientSelectionModal();
     }
 }
 
@@ -266,6 +332,7 @@ function loadPatient(patient) {
         firstName: patient.firstName,
         middleName: patient.middleName,
         dob: patient.dob,
+        sex: patient.sex, // New Field
         gender: patient.gender,
         address: patient.address,
         city: patient.city,
@@ -336,6 +403,7 @@ function populateDemographicsForm(data) {
         'first-name': data.firstName,
         'middle-name': data.middleName,
         'dob': data.dob,
+        'sex': data.sex, // New Field
         'gender': data.gender,
         'address': data.address,
         'city': data.city,
@@ -406,6 +474,7 @@ function saveDemographics() {
         firstName: document.getElementById('first-name').value,
         middleName: document.getElementById('middle-name').value,
         dob: document.getElementById('dob').value,
+        sex: document.getElementById('sex').value, // New Field
         gender: document.getElementById('gender').value,
         allergies: document.getElementById('allergies').value,
         // Capture other fields for completeness if needed, but these are the core for header
@@ -996,6 +1065,8 @@ function saveHistory() {
         },
         social: {
             tobacco: document.getElementById('sh-tobacco').value,
+            tobaccoStart: document.getElementById('sh-tobacco-start').value,
+            tobaccoQuit: document.getElementById('sh-tobacco-quit').value,
             alcohol: document.getElementById('sh-alcohol').value,
             drugs: document.getElementById('sh-drugs').value,
             occupation: document.getElementById('sh-occupation').value,
@@ -1035,10 +1106,15 @@ function populateHistoryForm(data) {
     // Social History
     if (data.social) {
         document.getElementById('sh-tobacco').value = data.social.tobacco || 'never';
+        document.getElementById('sh-tobacco-start').value = data.social.tobaccoStart || '';
+        document.getElementById('sh-tobacco-quit').value = data.social.tobaccoQuit || '';
         document.getElementById('sh-alcohol').value = data.social.alcohol || 'none';
         document.getElementById('sh-drugs').value = data.social.drugs || 'none';
         document.getElementById('sh-occupation').value = data.social.occupation || '';
         document.getElementById('sh-notes').value = data.social.notes || '';
+
+        // Update display of dependent fields
+        toggleTobaccoDates();
     }
 
     // Trigger auto-save for all fields
