@@ -542,6 +542,7 @@ function recordVitals() {
         o2Delivery: document.getElementById('o2-delivery').value,
         painScale: document.getElementById('pain-scale').value,
         painLocation: document.getElementById('pain-location').value,
+        bpLimb: document.getElementById('bp-limb').value,
         timestamp: getCurrentDateTime()
     };
 
@@ -573,7 +574,7 @@ function updateVitalsTable() {
     tbody.innerHTML = vitalsHistory.map((vital, index) => `
         <tr>
             <td>${vital.date} ${vital.time}</td>
-            <td>${vital.bpSystolic}/${vital.bpDiastolic}</td>
+            <td>${vital.bpSystolic}/${vital.bpDiastolic}${vital.bpLimb ? ' (' + vital.bpLimb + ')' : ''}</td>
             <td>${vital.heartRate || '-'}</td>
             <td>${vital.respRate || '-'}</td>
             <td>${vital.temp ? vital.temp + '°F (' + vital.tempRoute + ')' : '-'}</td>
@@ -599,6 +600,8 @@ function clearVitalsForm() {
         const field = document.getElementById(id);
         if (field) field.value = '';
     });
+    const bpLimb = document.getElementById('bp-limb');
+    if (bpLimb) bpLimb.value = '';
     setCurrentDateTime();
 }
 
