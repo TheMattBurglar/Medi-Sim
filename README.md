@@ -53,7 +53,7 @@ A professional, web-based Electronic Health Record (EHR) simulation interface de
 
 7. **Patient Database & Search**
    - **100+ Pre-loaded Patients**: Diverse database with San Antonio demographics.
-   - **Search Functionality**: Find patients by MRN or Account Number.
+   - **Search Functionality**: Find patients by Name, MRN, or Account Number.
    - **Auto-Clear**: Session data automatically clears when loading a new patient.
 
 ### Technical Features
@@ -74,7 +74,7 @@ No installation required! Simply open `index.html` in any modern web browser.
 ### Usage
 
 1. Open `index.html` in your web browser
-2. **Search for a Patient**: Enter an MRN (e.g., `S1234567`) or Account # in the top search bar.
+2. **Search for a Patient**: Enter a name, MRN (e.g., `S1234567`), or Account # in the top search bar.
 3. Navigate between sections using the tab buttons at the top
 4. Fill in patient information, vital signs, medications, assessments, etc.
 5. **BCMA Simulation**: In the Medication tab, use "Scan to Give" to simulate barcode scanning validation.
@@ -134,7 +134,7 @@ To customize for your simulation center:
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Copyright © 2025-2026. Licensing terms are currently under review.
 
 ## Support
 
