@@ -552,7 +552,7 @@ input[type="radio"] {
 
 .vitals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--spacing-md);
 }
 
@@ -566,6 +566,13 @@ input[type="radio"] {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  flex-wrap: wrap; /* Allow wrapping if absolutely necessary */
+}
+
+.vital-value input {
+  min-width: 80px;
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
 }
 
 .vital-unit {

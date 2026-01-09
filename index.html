@@ -494,7 +494,7 @@
                         <label for="temp">Temperature</label>
                         <div class="vital-value">
                             <input type="number" id="temp" step="0.1" placeholder="Temp">
-                            <select id="temp-route" style="width: 100px;">
+                            <select id="temp-route" style="width: 130px;">
                                 <option value="oral">Oral</option>
                                 <option value="axillary">Axillary</option>
                                 <option value="rectal">Rectal</option>
@@ -515,13 +515,27 @@
 
                     <div class="form-group">
                         <label for="o2-delivery">O2 Delivery</label>
-                        <select id="o2-delivery">
+                        <select id="o2-delivery" onchange="toggleO2Amount()">
                             <option value="room-air">Room Air</option>
                             <option value="nasal-cannula">Nasal Cannula</option>
                             <option value="face-mask">Face Mask</option>
                             <option value="non-rebreather">Non-Rebreather</option>
                             <option value="ventilator">Ventilator</option>
                         </select>
+                        <div id="o2-amount-group" class="sub-field-container" style="display: none;">
+                            <div class="form-group sub-field"
+                                style="margin-top: var(--spacing-sm); margin-left: var(--spacing-md); padding-left: var(--spacing-md); border-left: 2px solid var(--border-color);">
+                                <label for="o2-amount">O2 Flow/Amount</label>
+                                <div class="vital-value">
+                                    <input type="number" id="o2-amount" step="0.1" placeholder="Amount"
+                                        style="width: 80px;">
+                                    <select id="o2-unit" style="width: 100px;">
+                                        <option value="L/min">L/min</option>
+                                        <option value="% FiO2">% FiO2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -542,7 +556,7 @@
                         <label for="weight">Weight</label>
                         <div class="vital-value">
                             <input type="number" id="weight" step="0.1" placeholder="Weight">
-                            <select id="weight-unit" style="width: 70px;">
+                            <select id="weight-unit" style="width: 85px;">
                                 <option value="kg">kg</option>
                                 <option value="lbs">lbs</option>
                             </select>
@@ -553,7 +567,7 @@
                         <label for="height">Height</label>
                         <div class="vital-value">
                             <input type="number" id="height" step="0.1" placeholder="Height">
-                            <select id="height-unit" style="width: 70px;">
+                            <select id="height-unit" style="width: 85px;">
                                 <option value="cm">cm</option>
                                 <option value="in">in</option>
                             </select>

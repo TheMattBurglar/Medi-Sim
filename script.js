@@ -238,6 +238,19 @@ function toggleDrugFields() {
     }
 }
 
+function toggleO2Amount() {
+    const o2Delivery = document.getElementById('o2-delivery').value;
+    const amountGroup = document.getElementById('o2-amount-group');
+
+    if (o2Delivery !== 'room-air') {
+        amountGroup.style.display = 'block';
+    } else {
+        amountGroup.style.display = 'none';
+        // Clear value when hidden
+        document.getElementById('o2-amount').value = '';
+    }
+}
+
 function clearForm(formId) {
     const container = document.getElementById(formId);
     if (!container) return;
@@ -540,6 +553,8 @@ function recordVitals() {
         tempRoute: document.getElementById('temp-route').value,
         spo2: document.getElementById('spo2').value,
         o2Delivery: document.getElementById('o2-delivery').value,
+        o2Amount: document.getElementById('o2-amount').value,
+        o2Unit: document.getElementById('o2-unit').value,
         painScale: document.getElementById('pain-scale').value,
         painLocation: document.getElementById('pain-location').value,
         bpLimb: document.getElementById('bp-limb').value,
@@ -578,7 +593,10 @@ function updateVitalsTable() {
             <td>${vital.heartRate || '-'}</td>
             <td>${vital.respRate || '-'}</td>
             <td>${vital.temp ? vital.temp + '°F (' + vital.tempRoute + ')' : '-'}</td>
-            <td>${vital.spo2 ? vital.spo2 + '%' : '-'}</td>
+            <td>
+                ${vital.spo2 ? vital.spo2 + '%' : '-'}
+                ${vital.o2Delivery !== 'room-air' ? '<br><small>' + (vital.o2Delivery === 'nasal-cannula' ? 'NC' : vital.o2Delivery) + ': ' + (vital.o2Amount || '0') + ' ' + (vital.o2Unit || 'L/min') + '</small>' : '<br><small>RA</small>'}
+            </td>
             <td>${vital.painScale ? vital.painScale + '/10' : '-'}</td>
             <td><button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;" onclick="deleteVital(${index})">Delete</button></td>
         </tr>
@@ -595,13 +613,19 @@ function deleteVital(index) {
 }
 
 function clearVitalsForm() {
-    const fields = ['bp-systolic', 'bp-diastolic', 'heart-rate', 'resp-rate', 'temp', 'spo2', 'pain-scale', 'pain-location'];
+    const fields = ['bp-systolic', 'bp-diastolic', 'heart-rate', 'resp-rate', 'temp', 'spo2', 'pain-scale', 'pain-location', 'o2-amount'];
     fields.forEach(id => {
         const field = document.getElementById(id);
         if (field) field.value = '';
     });
     const bpLimb = document.getElementById('bp-limb');
     if (bpLimb) bpLimb.value = '';
+
+    // Reset O2 Delivery
+    const o2Delivery = document.getElementById('o2-delivery');
+    if (o2Delivery) o2Delivery.value = 'room-air';
+    toggleO2Amount();
+
     setCurrentDateTime();
 }
 
