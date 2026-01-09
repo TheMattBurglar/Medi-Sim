@@ -774,27 +774,90 @@
             <h3 class="section-subtitle">Neurological</h3>
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="loc">Level of Consciousness</label>
-                    <select id="loc">
-                        <option value="alert">Alert & Oriented x4</option>
-                        <option value="alert-x3">Alert & Oriented x3</option>
-                        <option value="alert-x2">Alert & Oriented x2</option>
-                        <option value="alert-x1">Alert & Oriented x1</option>
-                        <option value="lethargic">Lethargic</option>
-                        <option value="obtunded">Obtunded</option>
-                        <option value="stuporous">Stuporous</option>
-                        <option value="comatose">Comatose</option>
+                    <label for="gcs-eye">GCS: Eye Opening (E)</label>
+                    <select id="gcs-eye" onchange="updateGCS()">
+                        <option value="">Select...</option>
+                        <option value="4" selected>4 - Spontaneous</option>
+                        <option value="3">3 - To Speech</option>
+                        <option value="2">2 - To Pain</option>
+                        <option value="1">1 - None</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="pupils">Pupils</label>
-                    <select id="pupils">
-                        <option value="perrla">PERRLA (Normal)</option>
-                        <option value="dilated">Dilated</option>
-                        <option value="constricted">Constricted</option>
-                        <option value="unequal">Unequal</option>
-                        <option value="non-reactive">Non-Reactive</option>
+                    <label for="gcs-verbal">GCS: Verbal Response (V)</label>
+                    <select id="gcs-verbal" onchange="updateGCS()">
+                        <option value="">Select...</option>
+                        <option value="5" selected>5 - Oriented</option>
+                        <option value="4">4 - Confused</option>
+                        <option value="3">3 - Inappropriate Words</option>
+                        <option value="2">2 - Incomprehensible Sounds</option>
+                        <option value="1">1 - None</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="gcs-motor">GCS: Motor Response (M)</label>
+                    <select id="gcs-motor" onchange="updateGCS()">
+                        <option value="">Select...</option>
+                        <option value="6" selected>6 - Obeys Commands</option>
+                        <option value="5">5 - Localizes Pain</option>
+                        <option value="4">4 - Normal Flexion (Withdraws)</option>
+                        <option value="3">3 - Abnormal Flexion (Decorticate)</option>
+                        <option value="2">2 - Extension (Decerebrate)</option>
+                        <option value="1">1 - None</option>
+                    </select>
+                </div>
+                <div class="form-group gcs-summary-group">
+                    <label>GCS Total Score</label>
+                    <div class="gcs-result">
+                        <span id="gcs-score">15</span>
+                        <span id="gcs-classification" class="gcs-mild">Mild (Normal)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Left Pupil</label>
+                    <div class="vertical-field-group">
+                        <select id="pupil-left-size">
+                            <option value="">Size...</option>
+                            <option value="1">1 mm</option>
+                            <option value="2">2 mm</option>
+                            <option value="3" selected>3 mm</option>
+                            <option value="4">4 mm</option>
+                            <option value="5">5 mm</option>
+                            <option value="6">6 mm</option>
+                            <option value="7">7 mm</option>
+                            <option value="8">8 mm</option>
+                            <option value="9">9 mm</option>
+                        </select>
+                        <select id="pupil-left-reaction">
+                            <option value="">Reaction...</option>
+                            <option value="brisk" selected>Brisk</option>
+                            <option value="sluggish">Sluggish</option>
+                            <option value="fixed">Fixed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Right Pupil</label>
+                    <div class="vertical-field-group">
+                        <select id="pupil-right-size">
+                            <option value="">Size...</option>
+                            <option value="1">1 mm</option>
+                            <option value="2">2 mm</option>
+                            <option value="3" selected>3 mm</option>
+                            <option value="4">4 mm</option>
+                            <option value="5">5 mm</option>
+                            <option value="6">6 mm</option>
+                            <option value="7">7 mm</option>
+                            <option value="8">8 mm</option>
+                            <option value="9">9 mm</option>
+                        </select>
+                        <select id="pupil-right-reaction">
+                            <option value="">Reaction...</option>
+                            <option value="brisk" selected>Brisk</option>
+                            <option value="sluggish">Sluggish</option>
+                            <option value="fixed">Fixed</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="motor-function">Motor Function</label>

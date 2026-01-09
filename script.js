@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateHeader(demographics);
         updateAccountNumberFields(demographics.accountNumber);
     }
+    updateGCS();
 });
 
 // ============================================
@@ -267,6 +268,9 @@ function clearForm(formId) {
         }
     });
 
+    if (formId === 'assessments') {
+        updateGCS();
+    }
     showSaveIndicator();
 }
 
@@ -865,6 +869,49 @@ function saveAssessment() {
 
     saveData('currentAssessment', assessment);
     alert('Assessment saved successfully!');
+}
+
+function updateGCS() {
+    const eyeVal = document.getElementById('gcs-eye').value;
+    const verbalVal = document.getElementById('gcs-verbal').value;
+    const motorVal = document.getElementById('gcs-motor').value;
+
+    const scoreEl = document.getElementById('gcs-score');
+    const classEl = document.getElementById('gcs-classification');
+
+    if (!scoreEl || !classEl) return;
+
+    if (eyeVal === '' || verbalVal === '' || motorVal === '') {
+        scoreEl.innerText = '--';
+        classEl.innerText = 'Incomplete';
+        classEl.classList.remove('gcs-mild', 'gcs-moderate', 'gcs-severe');
+        classEl.style.backgroundColor = '#e2e8f0';
+        classEl.style.color = '#64748b';
+        return;
+    }
+
+    const eye = parseInt(eyeVal);
+    const verbal = parseInt(verbalVal);
+    const motor = parseInt(motorVal);
+    const total = eye + verbal + motor;
+
+    scoreEl.innerText = total;
+    classEl.style.backgroundColor = ''; // Reset inline styles
+    classEl.style.color = '';
+
+    // Severity and classes
+    classEl.classList.remove('gcs-mild', 'gcs-moderate', 'gcs-severe');
+
+    if (total >= 13) {
+        classEl.innerText = 'Mild (Normal)';
+        classEl.classList.add('gcs-mild');
+    } else if (total >= 9) {
+        classEl.innerText = 'Moderate';
+        classEl.classList.add('gcs-moderate');
+    } else {
+        classEl.innerText = 'Severe (Coma)';
+        classEl.classList.add('gcs-severe');
+    }
 }
 
 // ============================================
