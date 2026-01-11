@@ -268,6 +268,16 @@ body {
   margin-bottom: var(--spacing-lg);
 }
 
+.content-card>* {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content-card>.section-title {
+  max-width: none;
+}
+
 .section-title {
   font-size: var(--font-size-xl);
   font-weight: 600;
@@ -275,6 +285,11 @@ body {
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-sm);
   border-bottom: 2px solid var(--border-color);
+}
+
+/* Reduce spacing when ANY element follows title immediately */
+.section-title+* {
+  margin-top: 0 !important;
 }
 
 .section-subtitle {
