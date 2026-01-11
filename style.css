@@ -185,7 +185,7 @@ body {
    ============================================ */
 
 .container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg) var(--spacing-xl);
 }
@@ -199,7 +199,11 @@ body {
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-lg);
   border-bottom: 2px solid var(--border-color);
-  overflow-x: auto;
+  justify-content: center;
+  /* Center tabs */
+  flex-wrap: wrap;
+  /* Allow wrapping */
+  /* overflow-x: auto; Removed to preventing unnecessary scrollbar */
   background-color: var(--bg-card);
   padding: var(--spacing-md) var(--spacing-md) 0;
   border-radius: var(--border-radius) var(--border-radius) 0 0;

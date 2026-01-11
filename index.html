@@ -194,7 +194,18 @@
                     </div>
                     <div class="form-group">
                         <label for="primary-language">Primary Language</label>
-                        <input type="text" id="primary-language">
+                        <select id="primary-language">
+                            <option value="">Select...</option>
+                            <option value="English">English</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Tagalog">Tagalog</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="interpreter-needed">Interpreter Needed?</label>
@@ -209,7 +220,19 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="insurance-provider">Insurance Provider</label>
-                        <input type="text" id="insurance-provider">
+                        <select id="insurance-provider">
+                            <option value="">Select...</option>
+                            <option value="Blue Cross Blue Shield">Blue Cross Blue Shield</option>
+                            <option value="Aetna">Aetna</option>
+                            <option value="UnitedHealthcare">UnitedHealthcare</option>
+                            <option value="Cigna">Cigna</option>
+                            <option value="Medicare">Medicare</option>
+                            <option value="Medicaid">Medicaid</option>
+                            <option value="Tricare">Tricare</option>
+                            <option value="Kaiser Permanente">Kaiser Permanente</option>
+                            <option value="Self-Pay">Self-Pay</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="policy-number">Policy Number</label>
@@ -297,7 +320,18 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="sh-occupation">Occupation</label>
-                        <input type="text" id="sh-occupation" placeholder="Current/Former Occupation">
+                        <select id="sh-occupation">
+                            <option value="">Select...</option>
+                            <option value="Employed - Full Time">Employed - Full Time</option>
+                            <option value="Employed - Part Time">Employed - Part Time</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Unemployed">Unemployed</option>
+                            <option value="Retired">Retired</option>
+                            <option value="Student">Student</option>
+                            <option value="Disabled">Disabled</option>
+                            <option value="Homemaker">Homemaker</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="sh-tobacco">Tobacco Use</label>
@@ -860,12 +894,27 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="motor-function">Motor Function</label>
-                    <select id="motor-function">
-                        <option value="normal">Moves All Extremities</option>
+                    <label for="motor-upper">Motor Function: Upper Extremities</label>
+                    <select id="motor-upper">
+                        <option value="normal">Normal Strength / Moves Well</option>
                         <option value="weakness-right">Weakness - Right Side</option>
                         <option value="weakness-left">Weakness - Left Side</option>
-                        <option value="paralysis">Paralysis Present</option>
+                        <option value="weakness-bilateral">Weakness - Bilateral</option>
+                        <option value="paralysis-right">Paralysis - Right Side</option>
+                        <option value="paralysis-left">Paralysis - Left Side</option>
+                        <option value="paralysis-bilateral">Paralysis - Bilateral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="motor-lower">Motor Function: Lower Extremities</label>
+                    <select id="motor-lower">
+                        <option value="normal">Normal Strength / Moves Well</option>
+                        <option value="weakness-right">Weakness - Right Side</option>
+                        <option value="weakness-left">Weakness - Left Side</option>
+                        <option value="weakness-bilateral">Weakness - Bilateral</option>
+                        <option value="paralysis-right">Paralysis - Right Side</option>
+                        <option value="paralysis-left">Paralysis - Left Side</option>
+                        <option value="paralysis-bilateral">Paralysis - Bilateral</option>
                     </select>
                 </div>
             </div>
@@ -1114,11 +1163,33 @@
                     </div>
                     <div class="form-group full-width">
                         <label for="related-to">Related To</label>
-                        <input type="text" id="related-to" placeholder="e.g., surgical incision, immobility">
+                        <select id="related-to">
+                            <option value="">Select...</option>
+                            <option value="Surgical Incision">Surgical Incision</option>
+                            <option value="Immobility">Immobility</option>
+                            <option value="Disease Process">Disease Process</option>
+                            <option value="Infection">Infection</option>
+                            <option value="Tissue Damage">Tissue Damage</option>
+                            <option value="Advanced Age">Advanced Age</option>
+                            <option value="Medication Side Effect">Medication Side Effect</option>
+                            <option value="Hemodynamic Instability">Hemodynamic Instability</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-group full-width">
                         <label for="evidenced-by">As Evidenced By</label>
-                        <input type="text" id="evidenced-by" placeholder="e.g., patient reports pain 7/10">
+                        <select id="evidenced-by">
+                            <option value="">Select...</option>
+                            <option value="Patient Report">Patient Report</option>
+                            <option value="Grimacing/Guarding">Grimacing/Guarding</option>
+                            <option value="Abnormal Vitals">Abnormal Vitals</option>
+                            <option value="Lab Results">Lab Results</option>
+                            <option value="Imaging Findings">Imaging Findings</option>
+                            <option value="Physical Assessment">Physical Assessment</option>
+                            <option value="Limited ROM">Limited ROM</option>
+                            <option value="Skin Breakdown">Skin Breakdown</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                 </div>
 
